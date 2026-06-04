@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dokumentasi & Laporan — Muhammad Fito Najahan</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES
+    ============================================================ */
+    :root {
+      --bg:          #090d13;
+      --bg-2:        #0d1320;
+      --bg-3:        #111928;
+      --surface:     #141c2b;
+      --surface-2:   #1a2438;
+      --border:      rgba(0,255,180,0.12);
+      --border-glow: rgba(0,255,180,0.35);
+      --text:        #e8f0fe;
+      --text-muted:  #8899b4;
+      --accent:      #00ffb4;
+      --accent-2:    #00b8ff;
+      --accent-3:    #7000ff;
+      --glow:        0 0 18px rgba(0,255,180,0.5);
+      --glow-blue:   0 0 18px rgba(0,184,255,0.45);
+      --radius:      14px;
+      --radius-sm:   8px;
+      --font-mono:   'Space Mono', monospace;
+      --font-sans:   'Inter', sans-serif;
+      --transition:  0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    [data-theme="light"] {
+      --bg:          #f0f4ff;
+      --bg-2:        #e4eaf7;
+      --bg-3:        #d8e2f5;
+      --surface:     #ffffff;
+      --surface-2:   #edf2ff;
+      --border:      rgba(0,140,100,0.18);
+      --border-glow: rgba(0,140,100,0.40);
+      --text:        #0d1a2e;
+      --text-muted:  #445577;
+      --accent:      #009970;
+      --accent-2:    #005fcc;
+      --glow:        0 0 18px rgba(0,153,112,0.25);
+      --glow-blue:   0 0 18px rgba(0,95,204,0.25);
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.7;
+      overflow-x: hidden;
+      transition: background var(--transition), color var(--transition);
+    }
+    ::selection { background: var(--accent); color: var(--bg); }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* Noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Grid bg */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,180,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,180,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg-2); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 9px; }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    #navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(9,13,19,0.75);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+    [data-theme="light"] #navbar { background: rgba(240,244,255,0.80); }
+
+    .nav-logo {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+    }
+    .nav-logo span { color: var(--text-muted); }
+
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      transition: color var(--transition);
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width var(--transition);
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a.active { color: var(--accent); }
+    .nav-links a.active::after { width: 100%; }
+
+    #theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.45rem 0.75rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all var(--transition);
+    }
+    #theme-toggle:hover { border-color: var(--accent); color: var(--accent); box-shadow: var(--glow); }
+
+    #hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    #hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all var(--transition);
+    }
+
+    #mobile-menu {
+      display: none;
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: var(--bg-2);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem;
+      z-index: 99;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    #mobile-menu a {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+    #mobile-menu.open { display: flex; }
+
+    /* ============================================================
+       LAYOUT
+    ============================================================ */
+    section { position: relative; z-index: 1; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+    /* Page hero */
+    .page-hero {
+      padding: 9rem 0 4rem;
+      background: transparent;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .page-hero-blob-1 { width: 400px; height: 400px; background: var(--accent); top: -100px; left: -80px; }
+    .page-hero-blob-2 { width: 300px; height: 300px; background: var(--accent-2); bottom: -60px; right: -60px; }
+
+    /* Section heading */
+    .section-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .section-line {
+      width: 48px; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius: 3px;
+      margin-bottom: 2rem;
+      box-shadow: var(--glow);
+    }
+    .page-hero-desc {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin-top: 0.5rem;
+    }
+
+    /* Back link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      transition: color var(--transition);
+    }
+    .back-link:hover { color: var(--accent); }
+
+    /* ============================================================
+       DOCS SECTION
+    ============================================================ */
+    #dokumentasi { padding: 4rem 0 6rem; background: var(--bg-2); }
+
+    /* Category columns grid */
+    .docs-categories {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .doc-category {
+      background: rgba(20,28,43,0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: border-color var(--transition);
+    }
+    .doc-category:hover {
+      border-color: var(--border-glow);
+    }
+
+    .doc-category-header {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.9rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .doc-category-icon {
+      width: 34px; height: 34px;
+      border-radius: 8px;
+      background: rgba(0,255,180,0.1);
+      border: 1px solid rgba(0,255,180,0.18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .doc-category-icon.blue {
+      background: rgba(0,184,255,0.1);
+      border-color: rgba(0,184,255,0.18);
+      color: var(--accent-2);
+    }
+    .doc-category-icon.purple {
+      background: rgba(112,0,255,0.12);
+      border-color: rgba(168,85,247,0.22);
+      color: #a855f7;
+    }
+    .doc-category-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .doc-category-count {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+
+    /* Doc link items */
+    .doc-link-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .doc-link {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 0.5rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+    .doc-link:hover {
+      color: var(--accent-2);
+      background: rgba(0,184,255,0.06);
+      padding-left: 0.9rem;
+    }
+    .doc-link i {
+      font-size: 0.7rem;
+      color: var(--accent);
+      flex-shrink: 0;
+      transition: color 0.2s ease;
+    }
+    .doc-link:hover i { color: var(--accent-2); }
+
+    @media (max-width: 768px) { .docs-categories { grid-template-columns: 1fr; } }
+
+    /* Empty state */
+    .doc-empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 3rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      border: 1px dashed var(--border);
+      border-radius: 16px;
+    }
+    .doc-empty i {
+      display: block;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--border-glow);
+    }
+
+    /* Show more */
+    .show-more-wrap { text-align: center; margin-top: 2rem; }
+    .btn-show-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.8rem;
+      border-radius: 10px;
+      border: 1px solid var(--border-glow);
+      background: transparent;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .btn-show-more:hover { border-color: var(--accent-2); color: var(--accent-2); box-shadow: var(--glow-blue); }
+    .btn-show-more i { transition: transform 0.3s ease; }
+    .btn-show-more.expanded i { transform: rotate(180deg); }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.55s ease, transform 0.55s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      padding: 2.2rem 0;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+    .footer-copy span { color: var(--accent); }
+    .footer-socials { display: flex; gap: 0.7rem; }
+    .social-btn {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      transition: all var(--transition);
+    }
+    .social-btn:hover { border-color: var(--accent); color: var(--accent); box-shadow: var(--glow); transform: translateY(-2px); }
+
+    /* ============================================================
+       EXPERIENCE SECTION
+    ============================================================ */
+    #pengalaman {
+      padding: 5rem 0;
+      background: transparent;
+      border-top: 1px solid var(--border);
+    }
+
+    .exp-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .exp-card {
+      background: rgba(20,28,43,0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.3rem 1.5rem;
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .exp-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: linear-gradient(180deg, var(--accent), var(--accent-2));
+      border-radius: 3px 0 0 3px;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .exp-card:hover { border-color: var(--border-glow); box-shadow: var(--glow); transform: translateY(-4px); }
+    .exp-card:hover::before { opacity: 1; }
+
+    .exp-header { display: flex; align-items: center; gap: 0.9rem; margin-bottom: 0.9rem; }
+    .exp-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .exp-icon.green  { background: rgba(0,255,180,0.1);  border: 1px solid rgba(0,255,180,0.18);  color: var(--accent); }
+    .exp-icon.blue   { background: rgba(0,184,255,0.1);  border: 1px solid rgba(0,184,255,0.18);  color: var(--accent-2); }
+    .exp-icon.purple { background: rgba(112,0,255,0.12); border: 1px solid rgba(168,85,247,0.22); color: #a855f7; }
+
+    .exp-role     { font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .exp-category { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-top: 0.15rem; }
+
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .exp-bullets li {
+      font-size: 0.82rem; color: var(--text-muted);
+      padding-left: 1.1rem; position: relative; line-height: 1.6;
+    }
+    .exp-bullets li::before { content: '›'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+    @media (max-width: 768px) { .exp-list { grid-template-columns: 1fr; } }
+
+    /* ============================================================
+       PAGE TRANSITION
+    ============================================================ */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    body { animation: fadeIn 0.2s ease forwards; }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 900px) {
+      .docs-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { display: none; }
+      #hamburger { display: flex; }
+    }
+    @media (max-width: 560px) {
+      .docs-grid { grid-template-columns: 1fr; }
+      #navbar { padding: 1rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grid-bg" aria-hidden="true"></div>
+
+<!-- ============================================================
+     NAVIGATION
+============================================================ -->
+<nav id="navbar" role="navigation" aria-label="Navigasi utama">
+  <a href="index.html" class="nav-logo">&gt; <span>fito</span>.dev</a>
+
+  <ul class="nav-links">
+    <li><a href="index.html#home">Home</a></li>
+    <li><a href="index.html#about">About</a></li>
+    <li><a href="index.html#skills">Skills</a></li>
+    <li><a href="index.html#sertifikat">Sertifikat</a></li>
+    <li><a href="dokumentasi.html" class="active">Dokumentasi</a></li>
+    <li><a href="index.html#kontak">Kontak</a></li>
+  </ul>
+
+  <div style="display:flex;gap:0.7rem;align-items:center;">
+    <button id="theme-toggle" aria-label="Toggle tema">
+      <i class="fa-solid fa-moon" id="theme-icon"></i>
+    </button>
+    <button id="hamburger" aria-label="Buka menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile navigation -->
+<div id="mobile-menu" aria-label="Menu mobile">
+  <a href="index.html#home" class="mobile-link">Home</a>
+  <a href="index.html#about" class="mobile-link">About</a>
+  <a href="index.html#skills" class="mobile-link">Skills</a>
+  <a href="index.html#sertifikat" class="mobile-link">Sertifikat</a>
+  <a href="dokumentasi.html" class="mobile-link">Dokumentasi</a>
+  <a href="index.html#kontak" class="mobile-link">Kontak</a>
+</div>
+
+<!-- ============================================================
+     PAGE HERO
+============================================================ -->
+<div class="page-hero">
+  <div class="page-hero-blob page-hero-blob-1" aria-hidden="true"></div>
+  <div class="page-hero-blob page-hero-blob-2" aria-hidden="true"></div>
+  <div class="container">
+    <a href="index.html" class="back-link reveal">
+      <i class="fa-solid fa-arrow-left"></i> Kembali ke Portofolio
+    </a>
+    <div class="reveal">
+      <div class="section-tag">// Portofolio</div>
+      <h1 class="section-title">Catatan &amp; Karya Teknis</h1>
+      <div class="section-line"></div>
+      <p class="page-hero-desc">
+        Kumpulan dokumentasi konfigurasi, laporan proyek, dan catatan teknis dari perjalanan belajar saya di bidang jaringan, cloud, dan keamanan siber.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     DOCS GRID
+============================================================ -->
+<section id="dokumentasi" aria-label="Dokumentasi dan Laporan">
+  <div class="container">
+
+    <div class="reveal">
+      <div class="section-tag">// Dokumentasi</div>
+      <h2 class="section-title">Dokumentasi &amp; Laporan</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="docs-categories reveal" style="grid-template-columns: repeat(2, 1fr);">
+
+      <!-- ===== CLOUD COMPUTING ===== -->
+      <div class="doc-category">
+        <div class="doc-category-header">
+          <div class="doc-category-icon"><i class="fa-brands fa-aws"></i></div>
+          <div>
+            <div class="doc-category-title">Cloud Computing</div>
+            <div class="doc-category-count">AWS &amp; GCP</div>
+          </div>
+        </div>
+        <div class="doc-link-list">
+          <a href="https://drive.google.com/file/d/1kxVHtU9SsQzt8f1k3_fylxqF-wJKeP41/view" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Deploy Web di EC2 + Nginx</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Konfigurasi DNS &amp; Domain</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Setup Load Balancer</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> IAM &amp; Security Group</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> EC2 + RDS + S3 Integration</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> AWS Private-only Architecture (EICE)</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> VPC Endpoint &amp; S3 Gateway</a>
+        </div>
+      </div>
+
+      <!-- ===== LINUX SERVER ===== -->
+      <div class="doc-category">
+        <div class="doc-category-header">
+          <div class="doc-category-icon blue"><i class="fa-brands fa-linux"></i></div>
+          <div>
+            <div class="doc-category-title">Linux Server</div>
+            <div class="doc-category-count">Debian / Ubuntu</div>
+          </div>
+        </div>
+        <div class="doc-link-list">
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Konfigurasi SSH &amp; SSH-key Auth</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Konfigurasi DHCP Server</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Konfigurasi DNS Server</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Web Server Apache + PHP + MySQL</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Mail Server (Postfix + Dovecot)</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> FTP, SFTP &amp; Samba Server</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Automation dengan Ansible</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Deploy Wordpress</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Monitoring Zabbix &amp; Cacti</a>
+        </div>
+      </div>
+
+      <!-- ===== NETWORK ===== -->
+      <div class="doc-category">
+        <div class="doc-category-header">
+          <div class="doc-category-icon blue"><i class="fa-solid fa-network-wired"></i></div>
+          <div>
+            <div class="doc-category-title">Network</div>
+            <div class="doc-category-count">MikroTik &amp; Cisco</div>
+          </div>
+        </div>
+        <div class="doc-link-list">
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Routing Statis &amp; Dinamis (OSPF, BGP)</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> VLAN &amp; Inter-VLAN Routing</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Firewall &amp; NAT MikroTik</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Manajemen Bandwidth</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Konfigurasi VPN (PPTP, L2TP, IPSec)</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Topologi WAN &amp; LAN (Packet Tracer)</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Router NAT Gateway</a>
+        </div>
+      </div>
+
+      <!-- ===== CYBER SECURITY ===== -->
+      <div class="doc-category">
+        <div class="doc-category-header">
+          <div class="doc-category-icon purple"><i class="fa-solid fa-shield-halved"></i></div>
+          <div>
+            <div class="doc-category-title">Cyber Security</div>
+            <div class="doc-category-count">Keamanan Jaringan</div>
+          </div>
+        </div>
+        <div class="doc-link-list">
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> CIA Triad &amp; Konsep Dasar Keamanan</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Network Scanning dengan Nmap</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Analisis Paket dengan Wireshark</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Linux Server Hardening</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> UFW Firewall Configuration</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Social Engineering &amp; Phishing Mitigation</a>
+          <a href="#" class="doc-link" target="_blank"><i class="fa-solid fa-file-lines"></i> Cisco Cybersecurity Essentials (Catatan)</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     EXPERIENCE SECTION
+============================================================ -->
+<section id="pengalaman" aria-label="Pengalaman">
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="reveal">
+      <div class="section-tag">// Pengalaman</div>
+      <h2 class="section-title">Apa yang Saya Kerjakan?</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="exp-list">
+
+      <div class="exp-card reveal" data-delay="0">
+        <div class="exp-header">
+          <div class="exp-icon green"><i class="fa-brands fa-aws"></i></div>
+          <div>
+            <div class="exp-role">AWS Cloud Engineer</div>
+            <div class="exp-category">// Cloud Computing</div>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Membangun dan mengelola website pada layanan Amazon EC2.</li>
+          <li>Melakukan konfigurasi Nginx sebagai web server.</li>
+          <li>Mengimplementasikan DNS dan domain untuk publikasi website.</li>
+          <li>Mengonfigurasi Load Balancer untuk meningkatkan ketersediaan layanan.</li>
+          <li>Mengelola keamanan server menggunakan Security Group dan IAM.</li>
+          <li>Deployment website berbasis cloud menggunakan EC2 terintegrasi dengan RDS dan S3.</li>
+          <li>Mengimplementasikan arsitektur AWS private-only dengan akses EC2 melalui EC2 Instance Connect Endpoint (EICE) dan integrasi layanan menggunakan VPC Endpoint dan terhubung ke S3 melalui S3 gateway VPC endpoint.</li>
+        </ul>
+      </div>
+
+      <div class="exp-card reveal" data-delay="60">
+        <div class="exp-header">
+          <div class="exp-icon green"><i class="fa-solid fa-server"></i></div>
+          <div>
+            <div class="exp-role">System Administrator</div>
+            <div class="exp-category">// Linux Server</div>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Mengelola dan memelihara server Linux untuk memastikan ketersediaan layanan.</li>
+          <li>Melakukan instalasi, konfigurasi, dan pembaruan sistem operasi serta aplikasi server.</li>
+          <li>Konfigurasi network di dalam Linux.</li>
+          <li>Konfigurasi SSH, SFTP, SAMBA, Web Server, Mail Server, Automation Ansible, DHCP dan DNS Server.</li>
+        </ul>
+      </div>
+
+      <div class="exp-card reveal" data-delay="120">
+        <div class="exp-header">
+          <div class="exp-icon blue"><i class="fa-solid fa-network-wired"></i></div>
+          <div>
+            <div class="exp-role">Network Engineer</div>
+            <div class="exp-category">// Networking</div>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Konfigurasi routing statis dan dinamis (OSPF, BGP) menggunakan MikroTik RouterOS.</li>
+          <li>Implementasi VLAN, trunking, dan inter-VLAN routing pada jaringan enterprise.</li>
+          <li>Konfigurasi Firewall, NAT, dan manajemen bandwidth menggunakan MikroTik.</li>
+          <li>Membangun topologi jaringan WAN dan LAN menggunakan Cisco Packet Tracer.</li>
+          <li>Konfigurasi VPN (PPTP, L2TP, IPSec) untuk koneksi remote yang aman.</li>
+        </ul>
+      </div>
+
+      <div class="exp-card reveal" data-delay="180">
+        <div class="exp-header">
+          <div class="exp-icon purple"><i class="fa-solid fa-shield-halved"></i></div>
+          <div>
+            <div class="exp-role">Cyber Security</div>
+            <div class="exp-category">// Security</div>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Memahami konsep dasar keamanan siber: CIA Triad, ancaman, dan vulnerability.</li>
+          <li>Praktik pengujian keamanan jaringan menggunakan tools seperti Nmap dan Wireshark.</li>
+          <li>Implementasi hardening server Linux: disable unnecessary services, SSH key auth, UFW firewall.</li>
+          <li>Pemegang sertifikasi Cisco Cybersecurity Essentials dan Cybersecurity Dasar.</li>
+          <li>Memahami teknik Social Engineering, Phishing, dan cara mitigasinya.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-copy">
+        &copy; 2025 <span>Muhammad Fito Najahan</span> · SMK Wikrama Bogor · TJKT
+      </div>
+      <div class="footer-socials">
+        <a href="https://github.com/fitonajahan-cyber" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="GitHub">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/muhammad-fito-najahan-082863350/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a href="mailto:fitonajahan@gmail.com" class="social-btn" aria-label="Email">
+          <i class="fa-solid fa-envelope"></i>
+        </a>
+        <a href="https://www.instagram.com/njhaann_/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+  /* ===== PAGE TRANSITION ===== */
+  document.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href');
+    if (!href.startsWith('#') && !href.startsWith('mailto') && !href.startsWith('http')) {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        document.body.style.transition = 'opacity 0.18s ease';
+        document.body.style.opacity = '0';
+        setTimeout(() => { window.location.href = href; }, 185);
+      });
+    }
+  });
+
+  /* ===== THEME TOGGLE ===== */
+  const html      = document.documentElement;
+  const toggleBtn = document.getElementById('theme-toggle');
+  const icon      = document.getElementById('theme-icon');
+  const saved     = localStorage.getItem('theme') || 'dark';
+  html.setAttribute('data-theme', saved);
+  icon.className  = saved === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+
+  toggleBtn.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    icon.className = next === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+    localStorage.setItem('theme', next);
+  });
+
+  /* ===== HAMBURGER ===== */
+  const hamburger  = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  hamburger.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', open);
+  });
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', false);
+    });
+  });
+
+  /* ===== SCROLL REVEAL ===== */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const delay = entry.target.dataset.delay || 0;
+        setTimeout(() => entry.target.classList.add('visible'), parseInt(delay));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  /* ===== NAVBAR SCROLL ===== */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.style.background = window.scrollY > 40
+      ? (html.getAttribute('data-theme') === 'dark'
+          ? 'rgba(9,13,19,0.95)'
+          : 'rgba(240,244,255,0.96)')
+      : '';
+  });
+</script>
+</body>
+</html>
